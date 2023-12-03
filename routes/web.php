@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,18 +15,47 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::get('/clear', [HomeController::class, 'clear']);
+
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/', function () {
+//         return redirect('/dashboard');
+//     });
+//     Route::get('/dashboard', [HomeController::class, 'dashboard']);
+//     Route::get('/requests', [RequestResearchController::class, 'getAllRequests']);
+//     Route::get('/users', [UserController::class, 'getAllUsers']);
+//     Route::get('/profile', [AdminController::class, 'profile']);
+// });
+
+// Route::controller(AdminController::class)->group(function () {
+//     Route::get('/sign-up', 'viewSignUp')->name('sign-up');
+//     Route::post('/register', 'register');
+//     Route::get('/sign-in', 'viewSignIn')->name('sign-in');
+//     Route::post('/login', 'login');
+//     Route::post('/logout', 'logout');
+// });
+
+
 Route::middleware(['auth:admin', 'verified'])->group(function () {
 
     Route::get('/', function () {
-        return view('welcome');
+        return redirect('/dashboard');
     });
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [HomeController::class, 'dashboard']);
+    Route::get('/requests', [RequestResearchController::class, 'getAllRequests']);
+    Route::get('/users', [UserController::class, 'getAllUsers']);
+    Route::get('/profile', [AdminController::class, 'profile']);
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Route::get('/', function () {
+    //     return view();
+    // });
+    // Route::get('/dashboard', function () {
+    //     return view('dashboard');
+    // })->name('dashboard');
+
+    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__ . '/auth.php';
